@@ -21,14 +21,14 @@ install_requires = [
 
 tests_require = [
     "lxml",
+    "grokcore.layout",
     "zope.annotation",
     "zope.authentication",
     "zope.browserpage",
     "zope.password",
-    "dolmen.forms.base",
     "zope.app.appsetup",
     "zope.app.publication",
-    "zope.app.wsgi >= 3.9.2",
+    "zope.app.wsgi[test]",
     "zope.component",
     "zope.principalregistry",
     "zope.publisher",
@@ -37,6 +37,7 @@ tests_require = [
     "zope.securitypolicy",
     "zope.testing",
     "zope.traversing",
+    "zope.testbrowser",
     ]
 
 setup(name=name,

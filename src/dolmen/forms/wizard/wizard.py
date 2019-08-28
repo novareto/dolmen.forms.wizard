@@ -8,6 +8,7 @@ from zeam.form.base import Actions
 from zeam.form.base.widgets import getWidgetExtractor
 from zeam.form.composed import SubForm
 from zeam.form.layout import ComposedForm
+from zope.interface import implementer
 
 from dolmen.forms.wizard import MF as _
 from dolmen.forms.wizard.interfaces import IWizard
@@ -18,8 +19,8 @@ from dolmen.forms.wizard.actions import (PreviousAction, SaveAction,
 pt.templatedir('default_templates')
 
 
-class Wizard(ComposedForm):
-    grok.implements(IWizard)
+@implementer(IWizard)
+class Wizard(ComposedForm):  
     grok.baseclass()
 
     ignoreRequest = True
@@ -37,6 +38,7 @@ class Wizard(ComposedForm):
     def __init__(self, context, request):
         super(Wizard, self).__init__(context, request)
         self.setContentData(self)
+        self.allSubforms = list(self.allSubforms)
         self.__extracted_step = False
 
     def finish(self):
@@ -47,13 +49,13 @@ class Wizard(ComposedForm):
     def getMaximumStepId(self):
         """Returns the maximum step id.
         """
-        return len(self.subforms) - 1
+        return len(self.allSubforms) - 1
 
     def getCurrentStepId(self):
         """Returns the current step id.
         """
         if self.__extracted_step is True:
-            return self.step
+            return int(self.step)
 
         value, error = getWidgetExtractor(
             self.fields['step'], self, self.request).extract()
@@ -73,19 +75,17 @@ class Wizard(ComposedForm):
         """Sets a new current step.
         """
         sid = int(sid)
-        if not self.subforms:
+        if not self.allSubforms:
             self.current = None
             self.step = sid
         else:
             try:
-                assert sid >= 0 and sid < len(self.subforms)
-            except AssertionError, e:
+                assert sid >= 0 and sid < len(self.allSubforms)
+            except AssertionError as e:
                 raise AssertionError(
                     'Value %r is not within the permitted range' % sid)
             self.step = sid
-            self.current = self.subforms[sid]
-            self.current.update()
-            self.current.updateActions()
+            self.current = self.allSubforms[sid]
 
     def updateForm(self):
         self.setCurrentStep(self.getCurrentStepId())
@@ -94,7 +94,7 @@ class Wizard(ComposedForm):
         base.Form.updateWidgets(self)
 
     def update(self):
-        self.setCurrentStep(self.getCurrentStepId())
+        pass
 
 
 class WizardTemplate(pt.PageTemplate):

@@ -13,7 +13,7 @@
   <include package="zope.app.publication" file="meta.zcml" />
   <include package="zope.securitypolicy" file="meta.zcml" />
   <include package="zope.i18n" file="meta.zcml" />
-  <include package="megrok.layout" file="meta.zcml" />
+  <include package="grokcore.layout" file="meta.zcml" />
 
   <include package="zope.security" />
   <include package="zope.authentication" />

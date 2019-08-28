@@ -24,7 +24,7 @@ We have three default actions in the wizard:
 
    >>> wizard.update()
    >>> [action.title for action in wizard.actions]
-   [u'Back', u'Save', u'Continue']
+   ['Back', 'Save', 'Continue']
 
 
 Special actions

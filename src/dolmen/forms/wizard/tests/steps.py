@@ -7,7 +7,7 @@ We setup some content for the Wizard:
   >>> root = getRootFolder() 
   >>> root['contact'] = contact = MyContent()
 
-  >>> from zope.app.wsgi.testlayer import Browser
+  >>> from zope.testbrowser.wsgi import Browser
   >>> browser = Browser()
   >>> browser.handleErrors = False
  
@@ -35,7 +35,7 @@ After submitting the 'First Step' we should reach the second one:
 
   >>> age = browser.getControl(name="form.step2.field.age")
   >>> age
-  <Control name='form.step2.field.age' type='text'>
+  <Control name='form.step2.field.age' type='number'>
 
   >>> age.value = "eight"
 
@@ -55,16 +55,16 @@ Now we can navigate again to "Step Age" in try to submit the wizard
 
   >>> save.click()
   Finish Action: Christian Klinger 10
-  >>> print browser.contents
+  >>> print(browser.contents)
   name: Christian Klinger; age: 10 
   
 """
 
-from dolmen.forms import base
+from zeam.form.base import Fields
 from dolmen.forms import wizard
 from grokcore import component as grok
 from grokcore import view as view
-from megrok.layout import Layout
+from grokcore.layout import Layout
 from zope import interface
 from zope import schema
 from zope.security.protectclass import protectName, protectSetAttribute
@@ -105,7 +105,7 @@ class Index(view.View):
     grok.context(MyContent)
 
     def render(self):
-        return "name: %s; age: %s" % (
+        return "name: {0}; age: {1}".format(
             self.context.surname, self.context.age)
 
 
@@ -113,8 +113,8 @@ class PersonWizard(wizard.Wizard):
     grok.context(MyContent)
 
     def finish(self):
-        print "Finish Action: %s %s" % (
-            self.context.surname, self.context.age)
+        print("Finish Action: {0} {1}".format(
+            self.context.surname, self.context.age))
         return None
 
 
@@ -125,7 +125,7 @@ class Step1(wizard.WizardStep):
     grok.context(MyContent)
 
     ignoreContent = False
-    fields = base.Fields(IContact).select('surname')
+    fields = Fields(IContact).select('surname')
     label = "Step Name"
 
 
@@ -136,5 +136,5 @@ class Step2(wizard.WizardStep):
     grok.context(MyContent)
 
     ignoreContent = False
-    fields = base.Fields(IContact).select('age')
+    fields = Fields(IContact).select('age')
     label = "Step Age"

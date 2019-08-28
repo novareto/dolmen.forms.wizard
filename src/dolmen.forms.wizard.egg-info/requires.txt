@@ -1,9 +1,9 @@
 grokcore.component
 megrok.pagetemplate
 setuptools
-zeam.form.base >= 1.0
-zeam.form.composed >= 1.2
-zeam.form.ztk >= 1.0
+zeam.form.base>=1.0
+zeam.form.composed>=1.2
+zeam.form.ztk>=1.0
 zeam.form.layout
 zope.i18n
 zope.i18nmessageid
@@ -11,14 +11,14 @@ zope.interface
 
 [test]
 lxml
+grokcore.layout
 zope.annotation
 zope.authentication
 zope.browserpage
 zope.password
-dolmen.forms.base
 zope.app.appsetup
 zope.app.publication
-zope.app.wsgi >= 3.9.2
+zope.app.wsgi[test]
 zope.component
 zope.principalregistry
 zope.publisher
@@ -27,3 +27,4 @@ zope.security
 zope.securitypolicy
 zope.testing
 zope.traversing
+zope.testbrowser

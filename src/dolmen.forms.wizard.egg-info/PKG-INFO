@@ -1,4 +1,4 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: dolmen.forms.wizard
 Version: 0.1
 Summary: Wizard for zeam.form
@@ -69,3 +69,4 @@ Classifier: Intended Audience :: Other Audience
 Classifier: License :: OSI Approved :: GNU General Public License (GPL)
 Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python
+Provides-Extra: test
