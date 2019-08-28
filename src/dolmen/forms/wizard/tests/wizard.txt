@@ -1,0 +1,49 @@
+dolmen.forms.wizard
+===================
+
+Wizard
+------
+
+First let's setup a simple wizard:
+
+   >>> from dolmen.forms.wizard import Wizard 
+
+   >>> from zope.publisher.browser import TestRequest
+   >>> request = TestRequest()
+
+   >>> class Content(object):
+   ...     def __repr__(self):
+   ...         return '<%s object>' % self.__class__.__name__
+   >>> context = Content()
+
+   >>> wizard = Wizard(context, request)
+   >>> wizard 
+   <dolmen.forms.wizard.wizard.Wizard object at ...>
+
+We have three default actions in the wizard:
+
+   >>> wizard.update()
+   >>> [action.title for action in wizard.actions]
+   [u'Back', u'Save', u'Continue']
+
+
+Special actions
+---------------
+
+SaveAction redirects on default to the index page of 
+the content object.
+
+  >>> from dolmen.forms.wizard.actions import SaveAction
+  >>> saveaction = SaveAction(u"Save")
+  >>> saveaction
+  <SaveAction Save>
+
+  >>> saveaction.redirect_url
+  'index'
+
+We can change this behavior:
+
+  >>> custom_redirect_action = SaveAction(u"Save", url="edit")
+  >>> custom_redirect_action.redirect_url
+  'edit'
+

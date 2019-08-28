@@ -1,0 +1,2 @@
+recursive-include src/dolmen/forms/wizard *.txt *.py
+recursive-include docs *.txt
