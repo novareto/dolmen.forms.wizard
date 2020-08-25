@@ -2,7 +2,7 @@ from os.path import join
 from setuptools import setup, find_packages
 
 name = 'dolmen.forms.wizard'
-version = '0.1'
+version = '0.2'
 readme = open(join('src', 'dolmen', 'forms', 'wizard', 'README.txt')).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 

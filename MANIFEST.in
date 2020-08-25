@@ -1,2 +1,2 @@
-recursive-include src/dolmen/forms/wizard *.txt *.py
+recursive-include src/dolmen/forms/wizard *.txt *.py *.pt *.po *.mo
 recursive-include docs *.txt
