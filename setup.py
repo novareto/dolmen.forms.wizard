@@ -6,13 +6,13 @@ version = '0.1'
 readme = open(join('src', 'dolmen', 'forms', 'wizard', 'README.txt')).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
+
 install_requires = [
     "grokcore.component",
     "megrok.pagetemplate",
     "setuptools",
-    "zeam.form.base >= 1.0",
-    "zeam.form.composed >= 1.2",
-    "zeam.form.ztk >= 1.0",
+    "zeam.form.base >= 1.4.1",
+    "zeam.form.ztk >= 1.4",
     "zeam.form.layout",
     "zope.i18n",
     "zope.i18nmessageid",

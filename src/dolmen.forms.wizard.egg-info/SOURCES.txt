@@ -14,6 +14,7 @@ src/dolmen/forms/wizard/README.txt
 src/dolmen/forms/wizard/__init__.py
 src/dolmen/forms/wizard/actions.py
 src/dolmen/forms/wizard/interfaces.py
+src/dolmen/forms/wizard/meta.py
 src/dolmen/forms/wizard/wizard.py
 src/dolmen/forms/wizard/tests/__init__.py
 src/dolmen/forms/wizard/tests/rendering.py

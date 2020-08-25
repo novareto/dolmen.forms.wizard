@@ -1,17 +1,16 @@
-# -*- coding: utf-8 -*-
-
 import grokcore.component as grok
+from grokcore.component.util import sort_components
 
 from megrok import pagetemplate as pt
 from zeam.form import base
 from zeam.form.base import Actions
+from zeam.form.base.form import FormCanvas, GrokViewSupport
 from zeam.form.base.widgets import getWidgetExtractor
-from zeam.form.composed import SubForm
-from zeam.form.layout import ComposedForm
 from zope.interface import implementer
+from zope.component import getAdapters
 
 from dolmen.forms.wizard import MF as _
-from dolmen.forms.wizard.interfaces import IWizard
+from dolmen.forms.wizard.interfaces import IWizard, IStep
 from dolmen.forms.wizard.actions import (PreviousAction, SaveAction,
     NextAction, HiddenSaveAction)
 
@@ -20,7 +19,7 @@ pt.templatedir('default_templates')
 
 
 @implementer(IWizard)
-class Wizard(ComposedForm):  
+class Wizard(base.Form):
     grok.baseclass()
 
     ignoreRequest = True
@@ -36,9 +35,13 @@ class Wizard(ComposedForm):
         NextAction(_(u"Continue")))
 
     def __init__(self, context, request):
-        super(Wizard, self).__init__(context, request)
+        super().__init__(context, request)
         self.setContentData(self)
-        self.allSubforms = list(self.allSubforms)
+
+        steps = (f[1] for f in getAdapters(
+            (self.context, self,  self.request), IStep))
+
+        self.allSteps = sort_components(steps)
         self.__extracted_step = False
 
     def finish(self):
@@ -49,7 +52,13 @@ class Wizard(ComposedForm):
     def getMaximumStepId(self):
         """Returns the maximum step id.
         """
-        return len(self.allSubforms) - 1
+        return len(self.allSteps) - 1
+
+    def getStep(self, identifier):
+        for form in self.steps:
+            if form.htmlId() == identifier:
+                return form
+        return None
 
     def getCurrentStepId(self):
         """Returns the current step id.
@@ -75,17 +84,17 @@ class Wizard(ComposedForm):
         """Sets a new current step.
         """
         sid = int(sid)
-        if not self.allSubforms:
+        if not self.allSteps:
             self.current = None
             self.step = sid
         else:
             try:
-                assert sid >= 0 and sid < len(self.allSubforms)
+                assert sid >= 0 and sid < len(self.allSteps)
             except AssertionError as e:
                 raise AssertionError(
                     'Value %r is not within the permitted range' % sid)
             self.step = sid
-            self.current = self.allSubforms[sid]
+            self.current = self.allSteps[sid]
 
     def updateForm(self):
         self.setCurrentStep(self.getCurrentStepId())
@@ -101,13 +110,34 @@ class WizardTemplate(pt.PageTemplate):
     pt.view(Wizard)
 
 
-class WizardStep(SubForm):
+class WizardStep(FormCanvas, GrokViewSupport):
     pt.view(Wizard)
     grok.baseclass()
 
-    #ignoreContent = False
     actions = Actions(
         HiddenSaveAction(_(u"Save")))
+
+    # Set prefix to None, so it's changed by the grokker
+    label = u''
+    description = u''
+    prefix = None
+
+    def __init__(self, context, parent, request):
+        super().__init__(context, request)
+        self.parent = parent
+
+    def available(self):
+        return True
+
+    def htmlId(self):
+        return self.prefix.replace('.', '-')
+
+    def getWizard(self):
+        return self.parent
+
+
+class StepTemplate(pt.PageTemplate):
+    pt.view(WizardStep)
 
 
 __all__ = ["Wizard", "WizardStep", "Fields",

@@ -1,53 +1,55 @@
-<div>
-  <div class="portalMessage"
-       tal:condition="view/status" tal:content="view/status" />
-  <h1 tal:content="view/label" />
-  <form action="." method="post" tal:attributes="action request/getURL"
-	enctype="multipart/form-data"
-	class="dolmen-wizard-form">
-    <dl class="form-errors" tal:condition="view/formErrors">
-      <dt i18n:translate="">There were errors.</dt>
-      <dd class="form-error"
-	  tal:repeat="error view/formErrors">
-	<span tal:content="error/title" />
-      </dd>
-    </dl>
-    <fieldset>
-      <legend tal:content="view/current/label" />
-      <div class="step-fields"
-	   tal:condition="view/current/fieldWidgets">
-	<div class="field" tal:repeat="widget view/current/fieldWidgets">
-	  <label class="field-label" for="#"
-		 tal:attributes="for widget/htmlId"
-		 tal:content="widget/title">
-	    Label
-	  </label>
-	  <span class="field-required"
-		tal:condition="widget/required">*</span>
-	  <div class="field-description"
-	       tal:condition="widget/description"
-	       tal:content="widget/description" />
-	  <div class="field-error"
-		tal:define="error widget/error"
-		tal:condition="error"
-		tal:content="error/title" />
-	  <tal:widget tal:content="structure widget/render" />
-	</div>
-      </div>
-      <div class="fields"
-	   tal:condition="view/fieldWidgets">
-	<span class="field" tal:repeat="widget view/fieldWidgets">
-	  <tal:widget tal:content="structure widget/render" />
-        </span>
-      </div>
-      <div class="actions">
-	<span class="action" tal:repeat="widget view/actionWidgets">
-	  <tal:widget tal:content="structure widget/render" />
-	</span>
-	<span class="action" tal:repeat="widget view/current/actionWidgets">
-	  <tal:widget tal:content="structure widget/render" />
-	</span>
-      </div>
-    </fieldset>
-  </form>
-</div>
+<html>
+  <body>
+    <div class="portalMessage"
+         tal:condition="view/status" tal:content="view/status" />
+    <h1 tal:content="view/label" />
+    <form action="." method="post" tal:attributes="action request/getURL"
+	  enctype="multipart/form-data"
+	  class="dolmen-wizard-form">
+      <dl class="form-errors" tal:condition="view/formErrors">
+        <dt i18n:translate="">There were errors.</dt>
+        <dd class="form-error"
+	    tal:repeat="error view/formErrors">
+	  <span tal:content="error/title" />
+        </dd>
+      </dl>
+      <fieldset>
+        <legend tal:content="view/current/label" />
+        <div class="step-fields"
+	     tal:condition="view/current/fieldWidgets">
+	  <div class="field" tal:repeat="widget view/current/fieldWidgets">
+	    <label class="field-label" for="#"
+		   tal:attributes="for widget/htmlId"
+		   tal:content="widget/title">
+	      Label
+	    </label>
+	    <span class="field-required"
+		  tal:condition="widget/required">*</span>
+	    <div class="field-description"
+	         tal:condition="widget/description"
+	         tal:content="widget/description" />
+	    <div class="field-error"
+		 tal:define="error widget/error"
+		 tal:condition="error"
+		 tal:content="error/title" />
+	    <tal:widget tal:content="structure widget/render" />
+	  </div>
+        </div>
+        <div class="fields"
+	     tal:condition="view/fieldWidgets">
+	  <span class="field" tal:repeat="widget view/fieldWidgets">
+	    <tal:widget tal:content="structure widget/render" />
+          </span>
+        </div>
+        <div class="actions">
+	  <span class="action" tal:repeat="widget view/actionWidgets">
+	    <tal:widget tal:content="structure widget/render" />
+	  </span>
+	  <span class="action" tal:repeat="widget view/current/actionWidgets">
+	    <tal:widget tal:content="structure widget/render" />
+	  </span>
+        </div>
+      </fieldset>
+    </form>
+  </body>
+</html>

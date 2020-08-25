@@ -17,7 +17,7 @@ Let's try to get the wizard with the help of a getMultiAdapter
   >>> from zope import component
   >>> mywizard = component.getMultiAdapter(
   ... (content, request), name='mywizard')
-  >>> mywizard 
+  >>> mywizard
   <dolmen.forms.wizard.tests.rendering.MyWizard object at ...>
 
 Ok we can check some attributes of the Wizard. We start
@@ -28,14 +28,15 @@ with the actions:
   >>> [action.title for action in mywizard.actions]
   ['Back', 'Save', 'Continue']
 
-Do we have our steps? 
+Do we have our steps?
 
-  >>> mywizard.allSubforms
-  [<dolmen.forms.wizard.tests.rendering.Step1 object at ...>, 
+  >>> mywizard.allSteps
+  [<dolmen.forms.wizard.tests.rendering.Step1 object at ...>,
    <dolmen.forms.wizard.tests.rendering.Step2 object at ...>]
 
-  >>> print(mywizard())
-  <html> <div>
+  >>> print(mywizard())  #doctest: +NORMALIZE_WHITESPACE
+  <html>
+    <body>
     <h1></h1>
     <form action="http://127.0.0.1" method="post" enctype="multipart/form-data" class="dolmen-wizard-form">
       <fieldset>
@@ -44,7 +45,7 @@ Do we have our steps?
           <div class="field">
             <label class="field-label" for="form-step1-field-name">Name</label>
             <span class="field-required">*</span>
-            <input type="text" value="Paul" id="form-step1-field-name" name="form.step1.field.name" class="field field-textline field-required" required="required" />
+            <input type="text" value="Paul" id="form-step1-field-name" name="form.step1.field.name" class="field field-textline form-control field-required" required="required" />
           </div>
         </div>
         <div class="fields">
@@ -59,14 +60,15 @@ Do we have our steps?
         </div>
       </fieldset>
     </form>
-  </div>
-   </html>
+    </body>
+  </html>
 
   >>> mywizard = component.getMultiAdapter(
   ... (content, request), name='mywizard')
   >>> mywizard.step = 1
-  >>> print(mywizard())
-  <html> <div>
+  >>> print(mywizard())  #doctest: +NORMALIZE_WHITESPACE
+  <html>
+    <body>
     <h1></h1>
     <form action="http://127.0.0.1" method="post" enctype="multipart/form-data" class="dolmen-wizard-form">
       <fieldset>
@@ -75,7 +77,7 @@ Do we have our steps?
           <div class="field">
             <label class="field-label" for="form-step1-field-name">Name</label>
             <span class="field-required">*</span>
-            <input type="text" value="Paul" id="form-step1-field-name" name="form.step1.field.name" class="field field-textline field-required" required="required" />
+            <input type="text" value="Paul" id="form-step1-field-name" name="form.step1.field.name" class="field field-textline form-control field-required" required="required" />
           </div>
         </div>
         <div class="fields">
@@ -90,9 +92,8 @@ Do we have our steps?
         </div>
       </fieldset>
     </form>
-  </div>
-   </html>
-
+   </body>
+  </html>
 
 """
 
@@ -111,7 +112,7 @@ class IContact(interface.Interface):
 
 
 class Content(grok.Context):
-    name = "Paul" 
+    name = "Paul"
 
 
 class MyWizard(wizard.Wizard):
