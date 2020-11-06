@@ -8,6 +8,7 @@ from zeam.form.base.form import FormCanvas, GrokViewSupport
 from zeam.form.base.widgets import getWidgetExtractor
 from zope.interface import implementer
 from zope.component import getAdapters
+from zeam.form.layout import ComposedForm
 
 from dolmen.forms.wizard import MF as _
 from dolmen.forms.wizard.interfaces import IWizard, IStep
@@ -19,7 +20,7 @@ pt.templatedir('default_templates')
 
 
 @implementer(IWizard)
-class Wizard(base.Form):
+class Wizard(ComposedForm):
     grok.baseclass()
 
     ignoreRequest = True
@@ -37,7 +38,6 @@ class Wizard(base.Form):
     def __init__(self, context, request):
         super().__init__(context, request)
         self.setContentData(self)
-
         steps = (f[1] for f in getAdapters(
             (self.context, self,  self.request), IStep))
 
